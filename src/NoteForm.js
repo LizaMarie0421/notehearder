@@ -12,9 +12,13 @@ class NoteForm extends Component {
           </div>
           <form>
             <p>
-              <input type="text" name="title" placeholder="Title your note" value="Kohlrabi welsh"/>
+              <input 
+              type="text" 
+              name="title" 
+              placeholder="Title your note" 
+              value="Title note"
+              />
             </p>
-            
             <textarea name="body"></textarea>
           </form>
         </div>
