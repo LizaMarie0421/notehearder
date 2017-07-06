@@ -48,8 +48,8 @@ class App extends Component {
       saveNote: this.saveNote,
     }
     const noteData = {
-      notes: this.notes,
-      currentNote:this.currentNote,
+      notes: this.state.notes,
+      currentNote:this.state.currentNote,
     }
     return (
       <div className="App">
