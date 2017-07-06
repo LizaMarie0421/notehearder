@@ -8,6 +8,7 @@ class App extends Component {
    //parent class of component 
     super()
 
+    this.setCurrentNote=this.setCurrentNote.bind(this)
     this.state = {
       notes: {
         'note-1':{
@@ -19,15 +20,28 @@ class App extends Component {
         id: 'note-2',
         title:'Anotha one from app',
         body: 'also Fancy!',
-        },   
-
+      },  
+      }, 
+         currentNote:{
+        id: null,
+        title:'',
+        body:'',
+      
       }
     }
   }
+  setCurrentNote(note){
+    this.setState({currentNote: note})
+  }
+
+
   render() {
     return (
       <div className="App">
-        <Main notes={this.state.notes}/> 
+        <Main notes={this.state.notes}
+        currentNote={this.state.currentNote}
+        setCurrentNote={this.setCurrentNote()}
+        /> 
       </div>
     );
   }
