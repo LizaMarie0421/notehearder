@@ -4,7 +4,7 @@ import './NoteList.css'
 import Note from './Note'
 
 
-const NoteList =({note, notes,setCurrentNote}) => {
+const NoteList =({note, notes, setCurrentNote}) => {
 
 //array of note 1 and note 2 
     const noteIds = Object.keys(notes)

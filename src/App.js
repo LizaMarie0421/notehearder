@@ -9,24 +9,13 @@ class App extends Component {
     super()
 
     this.state = {
-      notes: {
-        'note-1':{
-        id: 'note-1',
-        title:'My Fancy Note from app',
-        body: 'This Note is so Fancy!',
-      },
-         'note-2':{
-        id: 'note-2',
-        title:'Anotha one from app',
-        body: 'also Fancy!',
-      },  
-      }, 
-         currentNote: this.blankNote()
+      notes: {},
+      currentNote: this.blankNote(),
     }
   }
   blankNote = () => {
     return{
-            id: null,
+        id: null,
         title:'',
         body:'',
     }
@@ -36,14 +25,27 @@ class App extends Component {
     this.setState({currentNote: note})
   }
 
-resetCurrentNote=()=>{
+  resetCurrentNote=()=>{
   this.setCurrentNote(this.blankNote())
 }
+
+  saveNote =(note)=>{
+    const notes = {...this.state.note}//copies the objects
+    if (!note.id){
+      note.id = Date.now()
+    }
+    notes[note.id]= note
+    this.setState({
+      notes,
+      currentNote: note,
+    }) // same as {notes:notes}
+  }
   render() {
     const actions = {
       //all methods passing as prop
       setCurrentNote: this.currentNote,
       resetCurrentNote: this.resetCurrentNote,
+      saveNote: this.saveNote,
     }
     const noteData = {
       notes: this.notes,
