@@ -1,10 +1,8 @@
 import React from 'react'
 
-const Note = (props) => {
+const Note = ({note, setCurrentnote}) => {
     const handleClick= ()=>{
-        props.setCurrentnote(props.note)
-    
-
+        setCurrentnote(note)
     }
     return(
     <a 
@@ -14,11 +12,11 @@ const Note = (props) => {
         <li>
         <div className="note">
             <div className="note-title">
-                {props.note.title}
+                {note.title}
             </div>
             <div className="note-body">
             <p>
-                {props.note.body}
+                {note.body}
             </p>
             </div>
         </div>

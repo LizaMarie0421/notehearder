@@ -21,25 +21,40 @@ class App extends Component {
         body: 'also Fancy!',
       },  
       }, 
-         currentNote:{
-        id: null,
-        title:'',
-        body:'',
-      
-      }
+         currentNote: this.blankNote()
     }
   }
+  blankNote = () => {
+    return{
+            id: null,
+        title:'',
+        body:'',
+    }
+  }
+
   setCurrentNote= (note) => {
     this.setState({currentNote: note})
   }
 
-
+resetCurrentNote=()=>{
+  this.setCurrentNote(this.blankNote())
+}
   render() {
+    const actions = {
+      //all methods passing as prop
+      setCurrentNote: this.currentNote,
+      resetCurrentNote: this.resetCurrentNote,
+    }
+    const noteData = {
+      notes: this.notes,
+      currentNote:this.currentNote,
+    }
     return (
       <div className="App">
-        <Main notes={this.state.notes}
-        currentNote={this.state.currentNote}
-        setCurrentNote={this.setCurrentNote()}
+        <Main 
+        {...noteData}
+        {...actions}
+        //spread syntax used to spread objects and array. pass in each prop as seperate arg. of function
         /> 
       </div>
     );
