@@ -6,20 +6,21 @@ import Sidebar from './Sidebar'
 import NoteList from './NoteList'
 import NoteForm from './NoteForm'
 
-const Main = ({notes, currentNote, setCurrentNote, resetCurrentNote, saveNote}) => {
+const Main = (props) => {
 //just needs to return what render would different from component of react
 return(
     <div className="Main">
         <Sidebar
-            resetCurrentNote={resetCurrentNote}
+            resetCurrentNote={props.resetCurrentNote}
         />
         <NoteList 
-        notes={notes}
-        setCurrentNote={setCurrentNote}
+        notes={props.notes}
+        setCurrentNote={props.setCurrentNote}
         />
         <NoteForm 
-        currentNote={currentNote}
-        saveNote={saveNote}
+        currentNote={props.currentNote}
+        saveNote={props.saveNote}
+        deleteCurrentNote={props.deleteCurrentNote}
         />
     </div>
 )

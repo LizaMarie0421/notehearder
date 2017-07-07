@@ -27,7 +27,10 @@ const Sidebar =({resetCurrentNote}) => {
           alt="New note"/>
           </a>
           <div className="SignOut">
-            <button><i className="fa fa-sign-out"></i>
+            <button>
+                <i 
+                className="fa fa-sign-out"
+                ></i>
             </button>
           </div>
         </nav>

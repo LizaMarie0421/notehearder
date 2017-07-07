@@ -1,5 +1,6 @@
 {
   "name": "notehearder",
+  "homepage" : "https://github.com/LizaMarie0421/notehearder",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
