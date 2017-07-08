@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Note = ({note, setCurrentnote}) => {
+const Note = ({note, setCurrentNote}) => {
     const handleClick= ()=>{
-        setCurrentnote(note)
+        setCurrentNote(note)
     }
     return(
     <a 

@@ -32,7 +32,7 @@ class NoteForm extends Component {
             <textarea 
             name="body" 
             value= {currentNote.body}
-            onChange={this.handleChanges}
+            onChange={this.handleChanges}            
             ></textarea>
           </form>
         </div>
