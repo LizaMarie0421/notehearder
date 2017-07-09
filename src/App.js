@@ -14,12 +14,12 @@ class App extends Component {
       currentNote: this.blankNote(),
     }
   }
-  componentDidMount =()=>{
+  componentDidMount =() =>{
     base.syncState(
       'notes',
       {
-        conext: this,//object state is on
-        state: 'notes', //which prop the state to sync
+        conext: this,//object that has the state
+        state: 'notes', //which prop the state to sync with firebase
       }
     )
   }
