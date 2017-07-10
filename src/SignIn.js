@@ -26,6 +26,10 @@ const SignIn = () => {
           <img src={googleLogo} alt="" />
           Sign in with Google
         </button>
+        <button class="github">
+            <i class="fa fa-github"></i>
+            Sign in with GitHub
+        </button>        
       </main>
     </div>
   )
