@@ -23,7 +23,7 @@ class App extends Component {
           //signedIn
           this.handleAuth(user)
         } else {
-          this.setState({uid:null})
+          this.hangleUnauth
           //signedout
         }
       }
@@ -31,7 +31,7 @@ class App extends Component {
 
   }
   syncNotes =() =>{
-    base.syncState(
+    this.bindingRef = base.syncState(
       `${this.state.uid}/notes`,
       {
         context: this,//object that has the state
@@ -80,7 +80,16 @@ class App extends Component {
       {uid: user.uid},
       this.syncNotes
       )
-   
+  }
+  hangleUnauth =()=>{
+    if (this.bingingRef){
+      base.removeBinding(this.bindingRef)
+    }    
+    this.setState({
+      uid:null, 
+      currentNote:this.blankNote(),
+      notes:{},
+    })
   }
   signOut =()=>{
     auth.signOut()
