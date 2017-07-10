@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import base from './base'
+import base, {auth} from './base'
 
 import './App.css';
 import Main from './Main'
 import SignIn from './SignIn'
-
-
 
 class App extends Component {
   constructor(){
@@ -18,9 +16,23 @@ class App extends Component {
       uid: null,
     }
   }
-  componentDidMount =() =>{
+  componentWillMount =()=>{
+    auth.onAuthStateChanged(
+      (user)=>{
+        if (user){
+          //signedIn
+          this.handleAuth(user)
+        } else {
+          this.setState({uid:null})
+          //signedout
+        }
+      }
+    )
+
+  }
+  syncNotes =() =>{
     base.syncState(
-      'notes',
+      `${this.state.uid}/notes`,
       {
         context: this,//object that has the state
         state: 'notes', //which prop the state to sync with firebase
@@ -63,13 +75,17 @@ class App extends Component {
   signedIn =() => {
       return true
     }
-  handleAuth =() =>{
-    this.setState({uid: "dstrus"})
+  handleAuth =(user) =>{
+    this.setState(
+      {uid: user.uid},
+      this.syncNotes
+      )
+   
   }
   signOut =()=>{
-    this.setState({uid: null})
+    auth.signOut()
   }
-  renderMain(){
+  renderMain= () => {
       const actions = {
       //all methods passing as prop
       setCurrentNote: this.setCurrentNote,
@@ -94,7 +110,8 @@ class App extends Component {
 
     return (
       <div className="App">
-      {this.signedIn()? this.renderMain(): <SignIn handleAuth={this.handleAuth}/>//ternary
+      {this.signedIn() ? this.renderMain(): <SignIn/>}
+
       </div>
     );
   }
