@@ -1,30 +1,29 @@
 import React from 'react'
 
-import './Main.css';
-
+import './Main.css'
 import Sidebar from './Sidebar'
 import NoteList from './NoteList'
 import NoteForm from './NoteForm'
 
 const Main = (props) => {
-//just needs to return what render would different from component of react
-return(
+  return (
     <div className="Main">
-        <Sidebar
-            resetCurrentNote={props.resetCurrentNote}
-            signOut={props.signOut}
-        />
-        <NoteList 
+      <Sidebar
+        resetCurrentNote={props.resetCurrentNote}
+        signOut={props.signOut}
+      />
+      <NoteList
         notes={props.notes}
-        setCurrentNote={props.setCurrentNote}
-        />
-        <NoteForm 
-        currentNote={props.currentNote}
+        setCurrentNoteId={props.setCurrentNoteId}
+      />
+      <NoteForm
+        notes={props.notes}
+        currentNoteId={props.currentNoteId}
         saveNote={props.saveNote}
-        deleteCurrentNote={props.deleteCurrentNote}
-        />
+        removeNote={props.removeNote}
+      />
     </div>
-)
+  )
 }
 
-export default Main 
+export default Main

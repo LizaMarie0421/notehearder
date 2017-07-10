@@ -1,61 +1,89 @@
 import React, { Component } from 'react'
+import RichTextEditor from 'react-rte'
 
-import './NoteForm.css';
-import RichtTextEditor from 'react-rte'
+import './NoteForm.css'
 
 class NoteForm extends Component {
-  state = {
-    editorValue: RichtTextEditor.createEmptyValue()
-  }
-  componentWillReceiveProps=({currentNote: nextCurrentNote})=>{
-    if(this.props.currentNote.id !== nextCurrentNote.body){
-      const editorValue = createValueFromString(nextCurrentNote.body, 'html')
-      this.setState({editorValue})
+  constructor(props) {
+    super(props)
+    this.state = {
+      note: this.blankNote(),
+      editorValue: RichTextEditor.createEmptyValue(),
     }
   }
-    handleChanges =(ev)=>{
-        const note = {...this.props.currentNote}
-        note[ev.target.name] = ev.target.value
 
-        this.props.saveNote(note)
+  componentWillReceiveProps = (nextProps) => {
+    const nextId = nextProps.currentNoteId
+    const note = nextProps.notes[nextId] || this.blankNote()
+
+    let editorValue = this.state.editorValue
+    if (editorValue.toString('html') !== note.body) {
+      editorValue = RichTextEditor.createValueFromString(note.body, 'html')
     }
-    handleEditorChanges =(editorValue)=>{
 
-      const note = {...this.props.currentNote}
-      note.body= editorValue.toString('html')
+    this.setState({ note, editorValue })
+  }
 
-      this.props.saveNote(note)
-      this.setState({editorValue})
+  blankNote = () => {
+    return {
+      id: null,
+      title: '',
+      body: '',
     }
+  }
+
+  handleChanges = (ev) => {
+    const note = {...this.state.note}
+    note[ev.target.name] = ev.target.value
+
+    this.setState(
+      { note },
+      () => this.props.saveNote(note)
+    )
+  }
+
+  handleEditorChanges = (editorValue) => {
+    const note = {...this.state.note}
+    note.body = editorValue.toString('html')
+    this.setState(
+      { note, editorValue },
+      () => this.props.saveNote(note)
+    )
+  }
+
+  handleRemove = () => {
+    this.props.removeNote(this.state.note)
+  }
+
   render() {
-      const {currentNote}=this.props
-
     return (
-        <div className="NoteForm">
-          <div className="form-actions">
-            <button 
+      <div className="NoteForm">
+        <div className="form-actions">
+          <button
             type="button"
-            onClick={this.props.deleteCurrentNote}
-            ><i className="fa fa-trash-o"></i>
-            </button>
-          </div>
-          <form>
-            <p>
-              <input 
-              type="text" 
-              name="title" 
-              placeholder="Title your note"
-              value= {currentNote.title}//one-way binding cannot change input but can trigger change event
-              onChange={this.handleChanges}
-              />
-            </p>
-            <RichtTextEditor
-            name="body" 
-            value= {this.state.editorValue}
-            onChange={this.handleEditorChanges}            
-            ></RichtTextEditor>
-          </form>
+            onClick={this.handleRemove}
+          >
+            <i className="fa fa-trash-o"></i>
+          </button>
         </div>
+        <form>
+          <p>
+            <input
+              type="text"
+              name="title"
+              placeholder="Title your note"
+              value={this.state.note.title}
+              onChange={this.handleChanges}
+            />
+          </p>
+          
+          <RichTextEditor
+            name="body"
+            value={this.state.editorValue}
+            onChange={this.handleEditorChanges}
+          ></RichTextEditor>
+        </form>
+      </div>
     )
   }
 }

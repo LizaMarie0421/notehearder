@@ -1,137 +1,137 @@
-import React, { Component } from 'react';
-import base, {auth} from './base'
+import React, { Component } from 'react'
+import base, { auth } from './base'
 
-import './App.css';
+import './App.css'
 import Main from './Main'
 import SignIn from './SignIn'
 
 class App extends Component {
-  constructor(){
-   //parent class of component 
+  constructor() {
     super()
 
     this.state = {
       notes: {},
-      currentNote: this.blankNote(),
+      currentNoteId: null,
       uid: null,
     }
   }
-    componentWillMount =()=>{
-      this.getUserFromLocalStorage()
+
+  componentWillMount = () => {
+    this.getUserFromLocalStorage()
     auth.onAuthStateChanged(
-      (user)=>{
-        if (user){
-          //signedIn
+      (user) => {
+        if (user) {
+          // signed in
           this.handleAuth(user)
         } else {
+          // signed out
           this.handleUnauth()
-          //signedout
         }
       }
     )
-
   }
 
-  getUserFromLocalStorage =()=>{
+  getUserFromLocalStorage = () => {
     const uid = localStorage.getItem('uid')
     if (!uid) return
-    this.setState({uid})
+    this.setState({ uid })
   }
-  syncNotes =() =>{
+
+  syncNotes = () => {
     this.bindingRef = base.syncState(
-      `${this.state.uid}/notes`,
+      `notes/${this.state.uid}`,
       {
-        context: this,//object that has the state
-        state: 'notes', //which prop the state to sync with firebase
+        context: this,  // what object the state is on
+        state: 'notes', // which property to sync
       }
     )
   }
-  blankNote = () => {
-    return{
-        id: null,
-        title:'',
-        body:'',
-    }  
+
+  setCurrentNoteId = (noteId) => {
+    this.setState({ currentNoteId: noteId })
   }
 
-  setCurrentNote=(note) => {
-    this.setState({ currentNote: note})
+  resetCurrentNote = () => {
+    this.setCurrentNoteId(null)
   }
 
-  resetCurrentNote=()=>{
-  this.setCurrentNote(this.blankNote())
-}
-
-  saveNote =(note)=>{
-    const notes = {...this.state.note}//copies the objects
-    if (!note.id){
+  saveNote = (note) => {
+    const notes = {...this.state.notes}
+    if (!note.id) {
       note.id = Date.now()
     }
-    notes[note.id]= note
-    this.setState({notes})
-    this.setCurrentNote(note) 
+    notes[note.id] = note
+
+    this.setState({ notes })
+    this.setCurrentNoteId(note.id)
   }
-  deleteCurrentNote =()=>{
+
+  removeNote = (note) => {
     const notes = {...this.state.notes}
-    notes[this.state.currentNote.id] = null
+    notes[note.id] = null
 
-    this.setState({notes})
-    this.resetCurrentNote({notes})
-
+    this.setState({ notes })
+    this.resetCurrentNote()
   }
-  signedIn =() => {
-      return this.state.uid
-    }
-  handleAuth =(user) =>{
+
+  signedIn = () => {
+    return this.state.uid
+  }
+
+  handleAuth = (user) => {
     localStorage.setItem('uid', user.uid)
     this.setState(
-      {uid: user.uid},
+      { uid: user.uid },
       this.syncNotes
-      )
-  }
-  handleUnauth =()=>{
-    localStorage.removeItem('uid')
-    if (this.bingingRef){
-      base.removeBinding(this.bindingRef)
-    }    
-    this.setState({
-      uid:null, 
-      currentNote:this.blankNote(),
-      notes:{},
-    })
-  }
-  signOut =()=>{
-    auth.signOut()
-  }
-  renderMain= () => {
-      const actions = {
-      //all methods passing as prop
-      setCurrentNote: this.setCurrentNote,
-      resetCurrentNote: this.resetCurrentNote,
-      saveNote: this.saveNote,
-      deleteCurrentNote: this.deleteCurrentNote,
-      signOut: this.signOut,
-    }
-    const noteData = {
-      notes: this.state.notes,
-      currentNote:this.state.currentNote,
-    }
-    return (
-      <Main 
-      {...noteData}
-      {...actions}
-      //spread syntax used to spread objects and array. pass in each prop as seperate arg. of function
-      /> 
     )
   }
-  render() {
+
+  handleUnauth = () => {
+    localStorage.removeItem('uid')
+    if (this.bindingRef) {
+      base.removeBinding(this.bindingRef)
+    }
+
+    this.setState({
+      uid: null,
+      notes: {},
+      currentNoteId: null,
+    })
+  }
+
+  signOut = () => {
+    auth.signOut()
+  }
+
+  renderMain() {
+    const actions = {
+      setCurrentNoteId: this.setCurrentNoteId,
+      resetCurrentNote: this.resetCurrentNote,
+      saveNote: this.saveNote,
+      removeNote: this.removeNote,
+      signOut: this.signOut,
+    }
+
+    const noteData = {
+      notes: this.state.notes,
+      currentNoteId: this.state.currentNoteId,
+    }
 
     return (
+      <Main
+        {...actions}
+        {...noteData}
+      />
+    )
+  }
+
+  render() {
+    return (
       <div className="App">
-      {this.signedIn() ? this.renderMain(): <SignIn/>}
+        { this.signedIn() ? this.renderMain() : <SignIn /> }
       </div>
     );
   }
 }
 
-export default App;
+export default App
