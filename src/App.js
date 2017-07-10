@@ -17,18 +17,25 @@ class App extends Component {
     }
   }
     componentWillMount =()=>{
+      this.getUserFromLocalStorage()
     auth.onAuthStateChanged(
       (user)=>{
         if (user){
           //signedIn
           this.handleAuth(user)
         } else {
-          this.hangleUnauth
+          this.handleUnauth()
           //signedout
         }
       }
     )
 
+  }
+
+  getUserFromLocalStorage =()=>{
+    const uid = localStorage.getItem('uid')
+    if (!uid) return
+    this.setState({uid})
   }
   syncNotes =() =>{
     this.bindingRef = base.syncState(
@@ -73,15 +80,17 @@ class App extends Component {
 
   }
   signedIn =() => {
-      return true
+      return this.state.uid
     }
   handleAuth =(user) =>{
+    localStorage.setItem('uid', user.uid)
     this.setState(
       {uid: user.uid},
       this.syncNotes
       )
   }
-  hangleUnauth =()=>{
+  handleUnauth =()=>{
+    localStorage.removeItem('uid')
     if (this.bingingRef){
       base.removeBinding(this.bindingRef)
     }    
@@ -120,7 +129,6 @@ class App extends Component {
     return (
       <div className="App">
       {this.signedIn() ? this.renderMain(): <SignIn/>}
-
       </div>
     );
   }
