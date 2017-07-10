@@ -7,6 +7,12 @@ class NoteForm extends Component {
   state = {
     editorValue: RichtTextEditor.createEmptyValue()
   }
+  componentWillReceiveProps=({currentNote: nextCurrentNote})=>{
+    if(this.props.currentNote.id !== nextCurrentNote.body){
+      const editorValue = createValueFromString(nextCurrentNote.body, 'html')
+      this.setState({editorValue})
+    }
+  }
     handleChanges =(ev)=>{
         const note = {...this.props.currentNote}
         note[ev.target.name] = ev.target.value
@@ -14,12 +20,12 @@ class NoteForm extends Component {
         this.props.saveNote(note)
     }
     handleEditorChanges =(editorValue)=>{
-      this.setState({editorValue})
 
       const note = {...this.props.currentNote}
       note.body= editorValue.toString('html')
 
       this.props.saveNote(note)
+      this.setState({editorValue})
     }
   render() {
       const {currentNote}=this.props
