@@ -6,7 +6,6 @@ const Note = ({note, setCurrentNote}) => {
     }
     return(
     <a 
-    className="active"
     onClick={handleClick}
     >
         <li>

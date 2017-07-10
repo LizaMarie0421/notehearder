@@ -14,7 +14,8 @@ class NoteForm extends Component {
     return (
         <div className="NoteForm">
           <div className="form-actions">
-            <button type="button"
+            <button 
+            type="button"
             onClick={this.props.deleteCurrentNote}
             ><i className="fa fa-trash-o"></i>
             </button>

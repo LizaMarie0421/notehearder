@@ -18,7 +18,7 @@ class App extends Component {
     base.syncState(
       'notes',
       {
-        conext: this,//object that has the state
+        context: this,//object that has the state
         state: 'notes', //which prop the state to sync with firebase
       }
     )
@@ -28,11 +28,11 @@ class App extends Component {
         id: null,
         title:'',
         body:'',
-    }
+    }  
   }
 
   setCurrentNote=(note) => {
-    this.setState({currentNote: note})
+    this.setState({ currentNote: note})
   }
 
   resetCurrentNote=()=>{
@@ -51,6 +51,7 @@ class App extends Component {
   deleteCurrentNote =()=>{
     const notes = {...this.state.notes}
     notes[this.state.currentNote.id] = null
+
     this.setState({notes})
     this.resetCurrentNote({notes})
 
@@ -58,7 +59,7 @@ class App extends Component {
   render() {
     const actions = {
       //all methods passing as prop
-      setCurrentNote: this.currentNote,
+      setCurrentNote: this.setCurrentNote,
       resetCurrentNote: this.resetCurrentNote,
       saveNote: this.saveNote,
       deleteCurrentNote: this.deleteCurrentNote,
