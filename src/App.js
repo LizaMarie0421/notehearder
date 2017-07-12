@@ -16,7 +16,7 @@ class App extends Component {
       uid: null,
     }
   }
-
+//use history push to change url in javascript when you cannot put a component in a method
   componentWillMount = () => {
     this.getUserFromLocalStorage()
     auth.onAuthStateChanged(
@@ -49,13 +49,18 @@ class App extends Component {
   }
 
   saveNote = (note) => {
+    let shouldRedirect= false
     const notes = {...this.state.notes}
     if (!note.id) {
       note.id = Date.now()
+      shouldRedirect= true
     }
     notes[note.id] = note
 
     this.setState({ notes })
+    if (shouldRedirect){
+      this.props.history.push(`/notes/${note.id}`)
+    }
   }
 
   removeNote = (note) => {
