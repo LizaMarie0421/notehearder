@@ -49,14 +49,6 @@ class App extends Component {
     )
   }
 
-  setCurrentNoteId = (noteId) => {
-    this.setState({ currentNoteId: noteId })
-  }
-
-  resetCurrentNote = () => {
-    this.setCurrentNoteId(null)
-  }
-
   saveNote = (note) => {
     const notes = {...this.state.notes}
     if (!note.id) {
@@ -107,7 +99,6 @@ class App extends Component {
 
   renderMain() {
     const actions = {
-      resetCurrentNote: this.resetCurrentNote,
       saveNote: this.saveNote,
       removeNote: this.removeNote,
       signOut: this.signOut,
