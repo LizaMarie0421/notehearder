@@ -14,7 +14,6 @@ const NoteList = ({ notes, setCurrentNoteId }) => {
           <Note
             key={noteId}
             note={notes[noteId]}
-            setCurrentNoteId={setCurrentNoteId}
           />
         ))}
       </ul>
