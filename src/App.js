@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Route, Switch, Redirect} from 'react-router-dom'
+
 import base, { auth } from './base'
 
 import './App.css'
@@ -128,7 +130,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        { this.signedIn() ? this.renderMain() : <SignIn /> }
+        <Switch>
+          <Route path="/sign-in" component ={SignIn}/>
+          <Route path="/notes" render={() => this.renderMain() }/>
+          <Route render={() => <Redirect to ="/notes" />}/>
+        </Switch>  
       </div>
     );
   }
